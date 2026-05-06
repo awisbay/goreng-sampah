@@ -1,0 +1,156 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "App user (Citizen, RT Leader, Lurah, or Sponsor)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "rt_id": { "type": "string" },
+        "role": { "enum": ["citizen", "rt_leader", "lurah", "sponsor", "officer"] },
+        "photo_url": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["name", "role", "email"]
+    },
+    "PickupRequest": {
+      "title": "Pickup Request",
+      "description": "Request for waste collection at doorstep",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "user_name": { "type": "string" },
+        "address": { "type": "string" },
+        "rt_id": { "type": "string" },
+        "weight": { "type": "number" },
+        "categories": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["pending", "accepted", "completed", "cancelled"] },
+        "officer_id": { "type": "string" },
+        "officer_name": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "completed_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "address", "rt_id", "status", "created_at"]
+    },
+    "RT": {
+      "title": "RT",
+      "description": "Neighborhood Unit (Rukun Tetangga)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "rw_id": { "type": "string" },
+        "kk_count": { "type": "number", "description": "Number of households for normalization" },
+        "total_score": { "type": "number" },
+        "total_weight_kg": { "type": "number" }
+      },
+      "required": ["name", "rw_id", "kk_count"]
+    },
+    "RW": {
+      "title": "RW",
+      "description": "Citizens Association (Rukun Warga)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "kelurahan_id": { "type": "string" }
+      },
+      "required": ["name", "kelurahan_id"]
+    },
+    "Kelurahan": {
+      "title": "Kelurahan",
+      "description": "Administrative Village",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "DropPoint": {
+      "title": "Drop Point",
+      "description": "Waste bank or collection point",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "accepts": { "type": "array", "description": "List of waste categories accepted" }
+      },
+      "required": ["name", "lat", "lng"]
+    },
+    "Deposit": {
+      "title": "Deposit",
+      "description": "Waste deposit transaction",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "rt_id": { "type": "string" },
+        "drop_point_id": { "type": "string" },
+        "weight_kg": { "type": "number" },
+        "category": { "enum": ["organik", "daur_ulang", "b3", "residu"] },
+        "photo_url": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "points": { "type": "number" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "rt_id", "drop_point_id", "weight_kg", "category", "created_at"]
+    },
+    "WeeklySeason": {
+      "title": "Weekly Season",
+      "description": "A week-long competition period",
+      "type": "object",
+      "properties": {
+        "week_number": { "type": "number" },
+        "start_at": { "type": "string", "format": "date-time" },
+        "end_at": { "type": "string", "format": "date-time" },
+        "reward_pool": { "type": "object" }
+      },
+      "required": ["week_number", "start_at", "end_at"]
+    },
+    "Reward": {
+      "title": "Reward",
+      "description": "Reward issued to winners",
+      "type": "object",
+      "properties": {
+        "season_id": { "type": "string" },
+        "recipient_user_id": { "type": "string" },
+        "recipient_rt_id": { "type": "string" },
+        "type": { "type": "string" },
+        "amount": { "type": "number" },
+        "sponsor": { "type": "string" },
+        "claimed": { "type": "boolean" }
+      },
+      "required": ["season_id", "type", "amount"]
+    },
+    "ViolationReport": {
+      "title": "Violation Report",
+      "description": "Report of illegal dumping or burning",
+      "type": "object",
+      "properties": {
+        "reporter_id": { "type": "string" },
+        "reporter_name": { "type": "string" },
+        "rt_id": { "type": "string" },
+        "photo_url": { "type": "string" },
+        "evidence_media_url": { "type": "string" },
+        "location_name": { "type": "string" },
+        "evidence_description": { "type": "string", "description": "Details about suspicious person or evidence" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "type": { "type": "string" },
+        "status": { "enum": ["pending", "verified", "rejected"] },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reporter_id", "rt_id", "type", "created_at"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": { "schema": "User", "description": "Global user profiles" },
+    "rts/{rtId}": { "schema": "RT", "description": "Neighborhood units" },
+    "rws/{rwId}": { "schema": "RW", "description": "Citizens associations" },
+    "kelurahan/{kelurahanId}": { "schema": "Kelurahan", "description": "Administrative villages" },
+    "drop_points/{dropPointId}": { "schema": "DropPoint", "description": "Drop point locations" },
+    "deposits/{depositId}": { "schema": "Deposit", "description": "All waste deposits" },
+    "weekly_seasons/{seasonId}": { "schema": "WeeklySeason", "description": "Competition seasons" },
+    "rewards/{rewardId}": { "schema": "Reward", "description": "Issued rewards" },
+    "violation_reports/{reportId}": { "schema": "ViolationReport", "description": "Citizen reports" },
+    "pickup_requests/{requestId}": { "schema": "PickupRequest", "description": "Waste collection requests" }
+  }
+}

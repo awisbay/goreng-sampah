@@ -1,0 +1,100 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isVerified() { return isSignedIn() && request.auth.token.email_verified == true; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    
+    // Role Helpers (Assuming a 'users' collection stores roles)
+    function getUserData(uid) { return get(/databases/$(database)/documents/users/$(uid)).data; }
+    function hasRole(role) { return isSignedIn() && getUserData(request.auth.uid).role == role; }
+
+    // --- Collections ---
+
+    // Users
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if hasRole('lurah') || hasRole('rt_leader');
+      allow create: if isOwner(userId) && 
+        incoming().role in ['citizen', 'rt_leader', 'lurah', 'sponsor', 'officer'] &&
+        incoming().email == request.auth.token.email;
+      allow update: if isOwner(userId) && 
+        incoming().diff(existing()).affectedKeys().hasOnly(['name', 'photo_url', 'rt_id', 'role']);
+    }
+
+    // RTs / RWs / Kelurahan (Public Leaderboard Data)
+    match /rts/{rtId} {
+      allow read: if isSignedIn();
+      allow update: if hasRole('rt_leader') || hasRole('lurah'); // Simplified for hackathon
+    }
+    match /rws/{rwId} {
+      allow read: if isSignedIn();
+    }
+    match /kelurahan/{kelId} {
+      allow read: if isSignedIn();
+    }
+
+    // Deposits
+    match /deposits/{depositId} {
+      allow get: if isOwner(existing().user_id) || hasRole('rt_leader') || hasRole('lurah');
+      allow list: if isSignedIn(); // Queries must be secured by user_id or rt_id filters
+      allow create: if isSignedIn() && 
+        incoming().user_id == request.auth.uid &&
+        incoming().weight_kg > 0 && incoming().weight_kg <= 20 &&
+        incoming().created_at == request.time &&
+        incoming().verified == false; // Must be verified by officer later
+      allow update: if hasRole('rt_leader') && 
+        incoming().diff(existing()).affectedKeys().hasAll(['verified', 'points']);
+    }
+
+    // Drop Points
+    match /drop_points/{dpId} {
+      allow read: if isSignedIn();
+      allow write: if hasRole('lurah');
+    }
+
+    // Weekly Seasons
+    match /weekly_seasons/{seasonId} {
+      allow read: if isSignedIn();
+    }
+
+    // Rewards
+    match /rewards/{rewardId} {
+      allow read: if isSignedIn() && (isOwner(resource.data.recipient_user_id) || hasRole('rt_leader') || hasRole('lurah'));
+      allow update: if isOwner(resource.data.recipient_user_id) && 
+        incoming().diff(existing()).affectedKeys().hasOnly(['claimed']);
+    }
+
+    // Violation Reports
+    match /violation_reports/{reportId} {
+      allow read: if isOwner(resource.data.reporter_id) || hasRole('rt_leader');
+      allow create: if isSignedIn() && 
+        incoming().reporter_id == request.auth.uid &&
+        incoming().created_at == request.time;
+    }
+
+    // Pickup Requests
+    match /pickup_requests/{requestId} {
+      allow read: if isSignedIn() && (isOwner(resource.data.user_id) || hasRole('officer') || hasRole('rt_leader'));
+      allow create: if isSignedIn() && 
+        incoming().user_id == request.auth.uid &&
+        incoming().status == 'pending' &&
+        incoming().weight is number && incoming().weight > 0 &&
+        incoming().created_at == request.time;
+      allow update: if isSignedIn() && (
+        (isOwner(existing().user_id) && incoming().status == 'cancelled' && incoming().diff(existing()).affectedKeys().hasOnly(['status'])) ||
+        (hasRole('officer') && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'officer_id', 'officer_name', 'completed_at']))
+      );
+    }
+  }
+}

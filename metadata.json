@@ -1,0 +1,13 @@
+{
+  "name": "GORENG",
+  "description": "GORENG (Gerakan Orang Peduli Lingkungan) - Gamifikasi pengelolaan sampah komunitas yang modern, seru, dan penuh hadiah.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "AI-powered waste sorting",
+    "Real-time leaderboards",
+    "Multi-stakeholder dashboards"
+  ]
+}
