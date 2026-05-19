@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Timer, Trophy, TrendingUp, HelpCircle, ArrowRight, Recycle, AlertCircle, Truck, Loader2, Search, Bell, MessageCircle, Heart, Share2, Star, TrendingUp as TrendUp } from 'lucide-react';
+import { Timer, Trophy, TrendingUp, HelpCircle, ArrowRight, Zap, AlertCircle, Truck, Loader2, Search, Bell, MessageCircle, Heart, Share2, Star } from 'lucide-react';
 import { MOCK_RTS, MOCK_SEASON } from '../lib/mockData';
 import { cn } from '@/lib/utils';
 
@@ -165,7 +165,7 @@ export default function Home({ onDepositClick, onReportClick }: { onDepositClick
                     className="h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.6)] rounded-full"
                   />
                 </div>
-                <p className="text-[11px] text-primary-foreground/90 font-medium flex items-center gap-1.5"><TrendUp className="w-3 h-3" /> 50 poin lagi untuk naik ke peringkat 10!</p>
+                <p className="text-[10px] text-primary-foreground/90 font-medium italic">🔥 50 poin lagi untuk naik ke peringkat 10!</p>
               </div>
             </div>
           </CardContent>
@@ -208,7 +208,7 @@ export default function Home({ onDepositClick, onReportClick }: { onDepositClick
         >
           <div className="flex items-center justify-center gap-4">
             <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-black/20 inset-shadow-sm">
-              <Recycle className="w-7 h-7 text-white" />
+              <Zap className="w-7 h-7 fill-white text-white" />
             </div>
             <div className="text-left leading-none">
                 <p className="text-xs font-bold opacity-60 uppercase tracking-widest mb-1">Aksi Cepat</p>
