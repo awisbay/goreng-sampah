@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Home, Trophy, PlusCircle, User, LayoutDashboard, Building2, Landmark, AlertCircle, Flame, Gift } from 'lucide-react';
+import { Home, Trophy, Recycle, User, LayoutDashboard, Building2, Landmark, AlertCircle, Leaf, Gift } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -22,7 +22,7 @@ export function Layout({ children, currentView, onViewChange }: LayoutProps) {
   const navItems = [
     { id: 'home', icon: Home, label: 'Home' },
     { id: 'leaderboard', icon: Trophy, label: 'Peringkat' },
-    { id: 'deposit', icon: PlusCircle, label: 'Setor', primary: true },
+    { id: 'deposit', icon: Recycle, label: 'Setor', primary: true },
     { id: 'marketplace', icon: Gift, label: 'Reward' },
     { id: 'report', icon: AlertCircle, label: 'Lapor' },
   ];
@@ -44,16 +44,16 @@ export function Layout({ children, currentView, onViewChange }: LayoutProps) {
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/90 backdrop-blur-xl px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2 group cursor-pointer" onClick={() => onViewChange('home')}>
-          <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20 transition-transform group-active:scale-95">
-            <Flame className="text-white w-6 h-6 fill-white/10" />
+          <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center shadow-md shadow-primary/20 transition-transform group-active:scale-95">
+            <Leaf className="text-white w-5 h-5" />
           </div>
-          <h1 className="font-black text-2xl tracking-tighter uppercase italic text-foreground">GO<span className="text-primary">RENG</span></h1>
+          <h1 className="font-bold text-xl tracking-tight text-foreground">Go<span className="text-primary">reng</span></h1>
         </div>
         {user && (
           <div className="flex items-center gap-3">
             <div className="text-right hidden xs:block">
-              <p className="text-xs font-black text-foreground uppercase tracking-tight">{user.name}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black leading-none mt-0.5">
+              <p className="text-sm font-semibold text-foreground">{user.name}</p>
+              <p className="text-[11px] text-muted-foreground font-medium leading-none mt-0.5">
                 {user.role === 'rt_leader' ? 'Ketua RT' : 
                  user.role === 'lurah' ? 'Lurah' : 
                  user.role === 'sponsor' ? 'Sponsor' : 
@@ -95,8 +95,8 @@ export function Layout({ children, currentView, onViewChange }: LayoutProps) {
                 item.primary && "relative -top-6 bg-secondary text-white hover:bg-black shadow-2xl shadow-secondary/30 rounded-[24px] w-16 h-16 border-4 border-background"
               )}
             >
-              <item.icon className={cn(item.primary ? "w-8 h-8" : "w-5 h-5 mb-1")} />
-              {!item.primary && <span className="text-[10px] font-black uppercase tracking-tight">{item.label}</span>}
+              <item.icon className={cn(item.primary ? "w-7 h-7" : "w-5 h-5 mb-1")} />
+              {!item.primary && <span className="text-[11px] font-semibold">{item.label}</span>}
             </button>
           ))}
         </div>
