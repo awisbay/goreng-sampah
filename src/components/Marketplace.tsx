@@ -93,11 +93,11 @@ export default function Marketplace() {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
-        {['🔥 Populer', '🎟 Voucher', '⚡️ Tagihan', '🍔 Makanan'].map((cat, i) => (
-          <Badge 
-            key={`market-cat-${i}`} 
-            variant="outline" 
-            className={`whitespace-nowrap px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest border-border bg-card shadow-sm ${i === 0 ? 'bg-primary text-white border-primary' : ''}`}
+        {['Populer', 'Voucher', 'Tagihan', 'Makanan'].map((cat, i) => (
+          <Badge
+            key={`market-cat-${i}`}
+            variant="outline"
+            className={`whitespace-nowrap px-4 py-2 rounded-xl font-semibold text-xs border-border bg-card shadow-sm ${i === 0 ? 'bg-primary text-white border-primary' : ''}`}
           >
             {cat}
           </Badge>
@@ -106,8 +106,8 @@ export default function Marketplace() {
 
       {/* Rewards Grid */}
       <div className="grid grid-cols-1 gap-4">
-        <h3 className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2 px-1">
-          REWARD UNTUK KAMU <Star className="w-3 h-3 fill-accent text-accent" />
+        <h3 className="font-semibold text-sm text-foreground flex items-center gap-2 px-1">
+          Reward untuk Kamu
         </h3>
         
         <AnimatePresence>
