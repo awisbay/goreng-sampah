@@ -8,6 +8,7 @@
   "majorCapabilities": [
     "AI-powered waste sorting",
     "Real-time leaderboards",
-    "Multi-stakeholder dashboards"
+    "Multi-stakeholder dashboards",
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]
 }

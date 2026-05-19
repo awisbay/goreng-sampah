@@ -16,12 +16,13 @@ import LurahDashboard from './components/LurahDashboard';
 import SponsorDashboard from './components/SponsorDashboard';
 import ReportViolation from './components/ReportViolation';
 import CollectorDashboard from './components/CollectorDashboard';
+import Marketplace from './components/Marketplace';
 import { Toaster } from '@/components/ui/sonner';
 import { Layout } from './components/Layout';
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [currentView, setCurrentView] = useState<'home' | 'leaderboard' | 'deposit' | 'report' | 'profile' | 'rt_dashboard' | 'lurah_dashboard' | 'sponsor_dashboard' | 'collector_dashboard'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'leaderboard' | 'deposit' | 'report' | 'profile' | 'rt_dashboard' | 'lurah_dashboard' | 'sponsor_dashboard' | 'collector_dashboard' | 'marketplace'>('home');
 
   useEffect(() => {
     if (user) {
@@ -55,6 +56,7 @@ function AppContent() {
       case 'leaderboard': return <Leaderboard />;
       case 'deposit': return <DepositWaste onComplete={() => setCurrentView('home')} onCancel={() => setCurrentView('home')} />;
       case 'report': return <ReportViolation onComplete={() => setCurrentView('home')} onCancel={() => setCurrentView('home')} />;
+      case 'marketplace': return <Marketplace />;
       case 'profile': return <Profile onSignOut={() => window.location.reload()} />;
       case 'rt_dashboard': return <RTDashboard />;
       case 'lurah_dashboard': return <LurahDashboard />;

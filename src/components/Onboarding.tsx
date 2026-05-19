@@ -25,29 +25,29 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <Card className="w-full max-w-md border-none shadow-2xl rounded-3xl overflow-hidden">
-        <CardHeader className="bg-emerald-600 text-white pt-10 pb-16 relative">
+        <CardHeader className="bg-primary text-primary-foreground pt-10 pb-16 relative">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-12 translate-x-12 blur-2xl" />
-          <CardTitle className="text-3xl font-black tracking-tight mb-2">Hampir Selesai!</CardTitle>
-          <CardDescription className="text-emerald-100 font-medium">
+          <CardTitle className="text-3xl font-black tracking-tight mb-2 uppercase italic text-primary-foreground">Hampir Selesai!</CardTitle>
+          <CardDescription className="text-primary-foreground/80 font-medium">
             Halo {user?.name}, pilih RT kamu untuk mulai mewakili tim-mu di GORENG.
           </CardDescription>
         </CardHeader>
         
-        <CardContent className="px-6 -mt-8 bg-white rounded-t-3xl pt-8 space-y-8">
+        <CardContent className="px-6 -mt-8 bg-card rounded-t-3xl pt-8 space-y-8">
           <div className="space-y-6">
-            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                <MapPin className="text-emerald-600" />
+            <div className="flex items-center gap-4 p-4 bg-background rounded-2xl border border-border">
+              <div className="w-12 h-12 bg-card rounded-xl flex items-center justify-center shadow-sm">
+                <MapPin className="text-primary" />
               </div>
               <div className="flex-1 space-y-1">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Pilih Wilayah</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Pilih Wilayah</p>
                 <Select onValueChange={setSelectedRT}>
-                  <SelectTrigger className="border-none bg-transparent p-0 h-auto font-bold text-slate-900 focus:ring-0">
+                  <SelectTrigger className="border-none bg-transparent p-0 h-auto font-bold text-foreground focus:ring-0">
                     <SelectValue placeholder="Pilih RT / RW Anda" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-2xl border-slate-100 shadow-xl">
+                  <SelectContent className="rounded-2xl border-border bg-card shadow-xl">
                     {MOCK_RTS.map((rt) => (
                       <SelectItem key={rt.id} value={rt.id} className="py-3 font-medium">
                         {rt.name} - RW 01 (Kel. Depok Jaya)
@@ -58,13 +58,13 @@ export default function Onboarding() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 opacity-60">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                <User className="text-slate-400" />
+            <div className="flex items-center gap-4 p-4 bg-background rounded-2xl border border-border opacity-60">
+              <div className="w-12 h-12 bg-card rounded-xl flex items-center justify-center shadow-sm">
+                <User className="text-muted-foreground" />
               </div>
-              <div className="flex-1 space-y-1">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Peran Anda</p>
-                <p className="font-bold text-slate-900">Warga (Citizen)</p>
+              <div className="flex-1 space-y-1 text-foreground">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Peran Anda</p>
+                <p className="font-bold">Warga (Citizen)</p>
               </div>
             </div>
           </div>
@@ -72,13 +72,13 @@ export default function Onboarding() {
           <Button 
             onClick={handleFinish} 
             disabled={!selectedRT || loading}
-            className="w-full h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-lg font-bold shadow-lg shadow-emerald-200 transition-all"
+            className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-black shadow-lg shadow-primary/20 transition-all uppercase tracking-widest"
           >
             {loading ? "Menyimpan..." : "Siap Bertanding!"}
             <ChevronRight className="ml-2 w-5 h-5" />
           </Button>
 
-          <p className="text-center text-xs text-slate-400 font-medium px-8">
+          <p className="text-center text-[10px] text-muted-foreground font-bold uppercase px-8">
             Kamu bisa mengubah wilayah di pengaturan profil nanti.
           </p>
         </CardContent>
